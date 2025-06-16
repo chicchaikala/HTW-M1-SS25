@@ -1,44 +1,94 @@
-import { downTo } from './helpers';
-
 export class Bottles {
-    verse(verseNumber) {
-        let bottlesText
+  verse(verseNumber) {
+    const bottleNumber = BottleNumber.factory(verseNumber);
+    const nextBottleNumber = BottleNumber.factory(bottleNumber.successor());
 
-        if (verseNumber === 0)
-            bottlesText =
-                `No more bottles of beer on the wall, no more bottles of beer.\n` +
-                `Go to the store and buy some more, 99 bottles of beer on the wall.\n`
+    return `${bottleNumber.capitalize(bottleNumber)} of beer on the wall, ${bottleNumber} of beer.\n` +
+            `${bottleNumber.action()}, ${nextBottleNumber} of beer on the wall.\n`;
+  }
 
-        if (verseNumber === 1)
-            bottlesText =
-                `${verseNumber} bottle of beer on the wall, ${verseNumber} bottle of beer.\n` +
-                `Take it down and pass it around, no more bottles of beer on the wall.\n`
+  verses(maxVerse, minVerse) {
+    let verseList = [];
 
-
-        if (verseNumber === 2)
-            bottlesText =
-                `${verseNumber} bottles of beer on the wall, ${verseNumber} bottles of beer.\n` +
-                `Take one down and pass it around, ${verseNumber - 1} bottle of beer on the wall.\n`
-
-        if (verseNumber > 2)
-            bottlesText =
-                `${verseNumber} bottles of beer on the wall, ${verseNumber} bottles of beer.\n` +
-                `Take one down and pass it around, ${verseNumber - 1} bottles of beer on the wall.\n`
-
-        return bottlesText;
+    for (let i = maxVerse; i >= minVerse; i--) {
+      verseList.push(this.verse(i));
     }
 
-    verses(maxVerse, minVerse) {
-        let verseList = [];
+    return verseList.join('\n');
+  }
 
-        for (let i = maxVerse; i >= minVerse; i--) {
-            verseList.push(this.verse(i))
-        }
+  song() {
+    return this.verses(99, 0);
+  }
+}
 
-        return verseList.join('\n')
-    }
+class BottleNumber {
+  static factory(number) {
+    let bottleNumberClass = BottleNumber;
 
-    song() {
-        return this.verses(99, 0)
-    }
+    if (number === 0)
+      bottleNumberClass = BottleNumber0;
+
+    if (number === 1)
+      bottleNumberClass = BottleNumber1;
+
+    return new bottleNumberClass(number);
+  }
+
+  constructor(number) {
+    this.number = number;
+  }
+
+  toString() {
+    return `${this.quantity()} ${this.container()}`;
+  }
+
+  container() {
+    return 'bottles';
+  }
+
+  pronoun() {
+    return 'one';
+  }
+
+  quantity() {
+    return this.number;
+  }
+
+  action() {
+    return `Take ${this.pronoun(this.number)} down and pass it around`;
+  }
+
+  successor() {
+    return this.number - 1;
+  }
+
+  capitalize(string) {
+    string = string.toString();
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+}
+
+class BottleNumber0 extends BottleNumber {
+  action() {
+    return 'Go to the store and buy some more';
+  }
+
+  quantity() {
+    return 'no more';
+  }
+
+  successor() {
+    return '99';
+  }
+}
+
+class BottleNumber1 extends BottleNumber {
+  container() {
+    return 'bottle';
+  }
+
+  pronoun() {
+    return 'it';
+  }
 }
