@@ -1,6 +1,6 @@
 import './style.css'
-import {StageOneFizzbuzz, StageTwoFizzBuzz} from "./fizzbuzz.ts";
 
+/**
 const stageOneFizzBuzz = (): string[] => {
     const fizzBuzzArray = []
 
@@ -27,10 +27,11 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
         ${Array.from(Array(100).keys()).map((number: number) => number+1).join('<br/>')}    
     </div>
     <div class="stage-one">
-        ${stageOneFizzBuzz().join('<br/>')}    
+        ${stageOneFizzBuzz().join('<br/>')}
     </div>
      <div class="stage-two">
         ${stageTwoFizzBuzz().join('<br/>')}    
     </div>
   </div>
 `
+ **/

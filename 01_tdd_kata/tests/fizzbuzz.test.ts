@@ -1,5 +1,37 @@
 import {describe, expect, test} from "@jest/globals";
-import {StageOneFizzbuzz, StageTwoFizzBuzz} from "../src/fizzbuzz";
+import {
+    FizzBuzz,
+    FizzBuzzRules,
+} from "../src/fizzbuzz";
+
+function FizzBuzzConfig(config: number, number: number): FizzBuzzRules {
+    const configObject = [
+        {
+            rules:
+                [
+                    {rule: number % 3 === 0, output: "Fizz"},
+                    {rule: number % 5 === 0, output: "Buzz"},
+                ]
+        },
+        {
+            rules:
+                [
+                    {rule: number % 3 === 0, output: "Fizz"},
+                    {rule: number.toString().includes("3"), output: "Fizz"},
+                    {rule: number % 5 === 0, output: "Buzz"},
+                    {rule: number.toString().includes("5"), output: "Buzz"},
+                ]
+        },
+        {
+            rules: [
+                {rule: number % 7 === 0, output: "Bizz"},
+                {rule: number % 3 === 0, output: "Fizz"},
+            ]
+        }
+    ]
+
+    return configObject[config]
+}
 
 describe("StageOneFizzBuzz", () => {
     const divisibleByNeither = [1, 2, 98, 64, 73]
@@ -7,64 +39,82 @@ describe("StageOneFizzBuzz", () => {
     const divisibleByFive = [5, 10, 100, 40, 65]
     const divisibleByThreeAndFive = [15, 30, 90, 45, 75]
 
+    const stage = 0;
+
     test("divisible by neither", () => {
         for (const number of divisibleByNeither) {
-            expect(StageOneFizzbuzz(number)).toBe(number.toString());
+            expect(FizzBuzz(number, FizzBuzzConfig(stage, number))).toBe(number.toString());
         }
     })
 
     test("divisible by 3", () => {
         for (const number of divisibleByThree) {
-            expect(StageOneFizzbuzz(number)).toBe("Fizz");
+            expect(FizzBuzz(number, FizzBuzzConfig(stage, number))).toBe("Fizz");
         }
     })
 
     test("divisible by 5", () => {
         for (const number of divisibleByFive) {
-            expect(StageOneFizzbuzz(number)).toBe("Buzz");
+            expect(FizzBuzz(number, FizzBuzzConfig(stage, number))).toBe("Buzz");
         }
     })
 
     test("divisible by 3 and 5", () => {
         for (const number of divisibleByThreeAndFive) {
-            expect(StageOneFizzbuzz(number)).toBe("FizzBuzz");
+            expect(FizzBuzz(number, FizzBuzzConfig(stage, number))).toBe("FizzBuzz");
         }
     })
 })
 
 describe("StageTwoFizzBuzz", () => {
+    const stage = 1;
+
     test("divisible by neither", () => {
-        expect(StageTwoFizzBuzz(1)).toBe("1");
+        expect(FizzBuzz(1, FizzBuzzConfig(stage, 1))).toBe("1");
     })
 
     test("divisible by 3", () => {
-        expect(StageTwoFizzBuzz(21)).toBe("Fizz");
+        expect(FizzBuzz(21, FizzBuzzConfig(stage, 21))).toBe("Fizz");
     })
 
     test("contains 3", () => {
-        expect(StageTwoFizzBuzz(31)).toBe("Fizz");
+        expect(FizzBuzz(31, FizzBuzzConfig(stage, 31))).toBe("Fizz");
     })
 
     test("divisible and contains 3", () => {
-        expect(StageTwoFizzBuzz(33)).toBe("FizzFizz");
+        expect(FizzBuzz(33, FizzBuzzConfig(stage, 3))).toBe("FizzFizz");
     })
 
     test("divisible by 5", () => {
-        expect(StageTwoFizzBuzz(10)).toBe("Buzz");
+        expect(FizzBuzz(10, FizzBuzzConfig(stage, 10))).toBe("Buzz");
     })
 
     test("contains 5", () => {
-        expect(StageTwoFizzBuzz(52)).toBe("Buzz");
+        expect(FizzBuzz(52, FizzBuzzConfig(stage, 52))).toBe("Buzz");
     })
 
     test("divisible and contains 5", () => {
-        expect(StageTwoFizzBuzz(5)).toBe("BuzzBuzz");
+        expect(FizzBuzz(5, FizzBuzzConfig(stage, 5))).toBe("BuzzBuzz");
     })
 
+
     test("divisible and contains 5, and divisible by 3", () => {
-        expect(StageTwoFizzBuzz(53)).toBe("FizzBuzz");
-        expect(StageTwoFizzBuzz(35)).toBe("FizzBuzzBuzz");
-        expect(StageTwoFizzBuzz(51)).toBe("FizzBuzz");
-        expect(StageTwoFizzBuzz(33)).toBe("FizzFizz");
+        expect(FizzBuzz(53, FizzBuzzConfig(stage, 53))).toBe("FizzBuzz");
+        expect(FizzBuzz(35, FizzBuzzConfig(stage, 35))).toBe("FizzBuzzBuzz");
+        expect(FizzBuzz(51, FizzBuzzConfig(stage, 51))).toBe("FizzBuzz");
+        expect(FizzBuzz(33, FizzBuzzConfig(stage, 33))).toBe("FizzFizz");
     })
+})
+
+describe("StageThree", () => {
+    const stage = 2;
+
+    test("divisible by neither", () => {
+        expect(FizzBuzz(1, FizzBuzzConfig(stage, 1))).toBe("1");
+    })
+
+    test("divisible by 7", () => {
+        expect(FizzBuzz(7, FizzBuzzConfig(stage, 7))).toBe("Bizz");
+    })
+
 })

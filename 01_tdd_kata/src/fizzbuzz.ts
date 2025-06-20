@@ -1,43 +1,23 @@
-export function StageOneFizzbuzz(number: number): string {
-    const divisibleByThree = number % 3 === 0;
-    const divisibleByFive = number % 5 === 0;
 
-    if (divisibleByThree && divisibleByFive)
-        return "FizzBuzz";
-
-    if (divisibleByFive)
-        return "Buzz";
-
-    if (divisibleByThree)
-        return "Fizz";
-
-    return number.toString();
+interface FizzRule {
+    rule: boolean;
+    output: string;
 }
 
-export function StageTwoFizzBuzz(number: number): string {
-    const numberString = number.toString();
+export interface FizzBuzzRules {
+    rules: FizzRule[]
+}
 
-    const divisibleByThree = number % 3 === 0;
-    const divisibleByFive = number % 5 === 0;
-    const containsThree = numberString.includes("3");
-    const containsFive = numberString.includes("5");
+export function FizzBuzz(number: number, rules: FizzBuzzRules) {
+    let returnString = ""
 
-    let returnString = "";
-
-    if (divisibleByThree)
-        returnString += "Fizz";
-
-    if (containsThree)
-        returnString += "Fizz";
-
-    if (divisibleByFive)
-        returnString += "Buzz";
-
-    if (containsFive)
-        returnString += "Buzz";
+    for (const rule of rules.rules) {
+        if (rule.rule)
+            returnString += rule.output;
+    }
 
     if (!returnString)
-        returnString += numberString;
+        returnString += number;
 
     return returnString;
 }
